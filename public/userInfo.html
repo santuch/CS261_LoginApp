@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>User Information</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <div class="user-info-container">
+            <h2>User Information</h2>
+
+            <p><strong>Username:</strong> <span id="username"></span></p>
+            <p>
+                <strong>Full Name (Thai):</strong> <span id="fullNameTh"></span>
+            </p>
+            <p>
+                <strong>Full Name (English):</strong>
+                <span id="fullNameEn"></span>
+            </p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Department:</strong> <span id="department"></span></p>
+            <p>
+                <strong>Faculty/Organization:</strong>
+                <span id="facultyOrOrg"></span>
+            </p>
+
+            <!-- Student Information Section -->
+            <div id="studentInfo" style="display: none">
+                <p>
+                    <strong>Student Status:</strong> <span id="tuStatus"></span>
+                </p>
+            </div>
+
+            <!-- Employee Information Section -->
+            <div id="employeeInfo" style="display: none">
+                <p>
+                    <strong>Work Status:</strong> <span id="workStatus"></span>
+                </p>
+                <p>
+                    <strong>Employee Status:</strong>
+                    <span id="employeeStatus"></span>
+                </p>
+            </div>
+
+            <button id="logoutBtn">Logout</button>
+        </div>
+
+        <script>
+            function getWorkStatusText(status) {
+                switch (status) {
+                    case "0":
+                        return "ลาออก (Resigned)";
+                    case "1":
+                        return "ปฏิบัติงาน (Active)";
+                    case "2":
+                        return "ไม่ปฏิบัติงาน (Not Working)";
+                    default:
+                        return "Unknown";
+                }
+            }
+
+            // Load user information from session storage
+            document.getElementById("username").textContent =
+                sessionStorage.getItem("username");
+            document.getElementById("fullNameTh").textContent =
+                sessionStorage.getItem("fullNameTh");
+            document.getElementById("fullNameEn").textContent =
+                sessionStorage.getItem("fullNameEn");
+            document.getElementById("email").textContent =
+                sessionStorage.getItem("email");
+            document.getElementById("department").textContent =
+                sessionStorage.getItem("department");
+            document.getElementById("facultyOrOrg").textContent =
+                sessionStorage.getItem("facultyOrOrg");
+
+            const userType = sessionStorage.getItem("type");
+
+            if (userType === "student") {
+                document.getElementById("studentInfo").style.display = "block";
+                document.getElementById("tuStatus").textContent =
+                    sessionStorage.getItem("tuStatus");
+            }
+
+            if (userType === "employee") {
+                document.getElementById("employeeInfo").style.display = "block";
+                const workStatus = sessionStorage.getItem("workStatus");
+                document.getElementById("workStatus").textContent =
+                    getWorkStatusText(workStatus);
+                document.getElementById("employeeStatus").textContent =
+                    sessionStorage.getItem("employeeStatus");
+            }
+
+            // Logout functionality
+            document.getElementById("logoutBtn").addEventListener("click", function () {
+                    sessionStorage.clear(); // Clear session storage
+                    window.location.href = "login.html"; // Redirect to login page
+                });
+        </script>
+    </body>
+</html>
